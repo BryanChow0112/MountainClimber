@@ -1,6 +1,10 @@
 # 23-S1-A2
 Mountain Climber Assignment
 
+## Group Members
+- Bryan Chow Wei Qian (bcho0034@student.monash.edu)
+- Kiyu Wen Sui (wkiy0001@student.monash.edu)
+
 ## Getting Started
 
 Instructions are extremely similar to those of A1:
