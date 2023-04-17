@@ -5,6 +5,7 @@ from mountain import Mountain
 from trail import Trail, TrailSeries, TrailSplit, TrailStore
 from personality import WalkerPersonality, TopWalker, BottomWalker, LazyWalker
 
+
 class TestTrailMethods(unittest.TestCase):
 
     def load_example(self):
@@ -13,7 +14,7 @@ class TestTrailMethods(unittest.TestCase):
         self.top_mid = Mountain("top-mid", 4, 7)
         self.bot_one = Mountain("bot-one", 2, 5)
         self.bot_two = Mountain("bot-two", 0, 0)
-        self.final   = Mountain("final", 4, 4)
+        self.final = Mountain("final", 4, 4)
         self.trail = Trail(TrailSplit(
             Trail(TrailSplit(
                 Trail(TrailSeries(self.top_top, Trail(None))),
@@ -42,7 +43,6 @@ class TestTrailMethods(unittest.TestCase):
         self.assertListEqual(bw.mountains, [self.bot_one, self.final])
         self.assertListEqual(lw.mountains, [self.top_bot, self.top_mid, self.final])
 
-
     @number("2.2")
     def test_custom_walk(self):
         class CustomWalker(WalkerPersonality):
@@ -50,6 +50,7 @@ class TestTrailMethods(unittest.TestCase):
                 super().__init__()
                 self.count = 0
                 self.choices = [False, True]
+
             def select_branch(self, top_branch: Trail, bottom_branch: Trail) -> bool:
                 self.count += 1
                 return self.choices[self.count - 1]

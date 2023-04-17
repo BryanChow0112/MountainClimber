@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Union
 if TYPE_CHECKING:
     from personality import WalkerPersonality
 
+
 @dataclass
 class TrailSplit:
     """
@@ -25,7 +26,8 @@ class TrailSplit:
 
     def remove_branch(self) -> TrailStore:
         """Removes the branch, should just leave the remaining following trail."""
-        raise NotImplementedError()
+        return self.path_follow.store
+
 
 @dataclass
 class TrailSeries:
@@ -41,48 +43,70 @@ class TrailSeries:
 
     def remove_mountain(self) -> TrailStore:
         """Removes the mountain at the beginning of this series."""
-        raise NotImplementedError()
+        return self.following.store
 
     def add_mountain_before(self, mountain: Mountain) -> TrailStore:
         """Adds a mountain in series before the current one."""
-        raise NotImplementedError()
+        return TrailSeries(mountain=mountain,following=Trail(store=self))
 
     def add_empty_branch_before(self) -> TrailStore:
         """Adds an empty branch, where the current trailstore is now the following path."""
-        raise NotImplementedError()
+        return TrailSplit(
+            path_top=Trail(store=None),
+            path_bottom=Trail(store=None),
+            path_follow=Trail(store=self)
+        )
 
     def add_mountain_after(self, mountain: Mountain) -> TrailStore:
         """Adds a mountain after the current mountain, but before the following trail."""
-        raise NotImplementedError()
+        return TrailSeries(mountain=self.mountain,following=Trail(store=TrailSeries(mountain=mountain,following=self.following)))
 
     def add_empty_branch_after(self) -> TrailStore:
         """Adds an empty branch after the current mountain, but before the following trail."""
-        raise NotImplementedError()
+        return TrailSeries(mountain=self.mountain,following=Trail(store=TrailSplit(
+            path_top=Trail(store=None),
+            path_bottom=Trail(store=None),
+            path_follow=Trail(store=None)
+        )))
+
 
 TrailStore = Union[TrailSplit, TrailSeries, None]
 
+
 @dataclass
 class Trail:
-
     store: TrailStore = None
 
     def add_mountain_before(self, mountain: Mountain) -> Trail:
         """Adds a mountain before everything currently in the trail."""
-        raise NotImplementedError()
+        return Trail(store=TrailSeries(mountain, self))
 
     def add_empty_branch_before(self) -> Trail:
         """Adds an empty branch before everything currently in the trail."""
-        raise NotImplementedError()
+        return Trail(store=TrailSplit(path_top=Trail(None), path_bottom=Trail(None), path_follow=self))
 
     def follow_path(self, personality: WalkerPersonality) -> None:
         """Follow a path and add mountains according to a personality."""
-        raise NotImplementedError()
+        trail = self.store
+        while trail is not None:
+            if isinstance(trail, TrailSplit):
+                if trail.path_follow.store is not None:
+                    personality.add_mountain(trail.path_follow.store.mountain)
+                if personality.select_branch(trail.path_top, trail.path_bottom):
+                    trail = trail.path_top.store
+                else:
+                    trail = trail.path_bottom.store
+            elif isinstance(trail, TrailSeries):
+                if trail.mountain is not None:
+                    personality.add_mountain(trail.mountain)
+                trail = trail.following.store
+        personality.mountains.reverse()
 
     def collect_all_mountains(self) -> list[Mountain]:
         """Returns a list of all mountains on the trail."""
         raise NotImplementedError()
 
-    def length_k_paths(self, k) -> list[list[Mountain]]: # Input to this should not exceed k > 50, at most 5 branches.
+    def length_k_paths(self, k) -> list[list[Mountain]]:  # Input to this should not exceed k > 50, at most 5 branches.
         """
         Returns a list of all paths of containing exactly k mountains.
         Paths are represented as lists of mountains.
