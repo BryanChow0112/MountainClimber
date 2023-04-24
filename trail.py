@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from mountain import Mountain
-from data_structures.linked_stack import LinkedStack
+
 from typing import TYPE_CHECKING, Union
 
 # Avoid circular imports for typing.
@@ -47,7 +47,7 @@ class TrailSeries:
 
     def add_mountain_before(self, mountain: Mountain) -> TrailStore:
         """Adds a mountain in series before the current one."""
-        return TrailSeries(mountain=mountain, following=Trail(store=self))
+        return TrailSeries(mountain=mountain,following=Trail(store=self))
 
     def add_empty_branch_before(self) -> TrailStore:
         """Adds an empty branch, where the current trailstore is now the following path."""
@@ -59,11 +59,11 @@ class TrailSeries:
 
     def add_mountain_after(self, mountain: Mountain) -> TrailStore:
         """Adds a mountain after the current mountain, but before the following trail."""
-        return TrailSeries(mountain=self.mountain, following=Trail(store=TrailSeries(mountain=mountain, following=self.following)))
+        return TrailSeries(mountain=self.mountain,following=Trail(store=TrailSeries(mountain=mountain,following=self.following)))
 
     def add_empty_branch_after(self) -> TrailStore:
         """Adds an empty branch after the current mountain, but before the following trail."""
-        return TrailSeries(mountain=self.mountain, following=Trail(store=TrailSplit(
+        return TrailSeries(mountain=self.mountain,following=Trail(store=TrailSplit(
             path_top=Trail(store=None),
             path_bottom=Trail(store=None),
             path_follow=Trail(store=None)
@@ -87,32 +87,20 @@ class Trail:
 
     def follow_path(self, personality: WalkerPersonality) -> None:
         """Follow a path and add mountains according to a personality."""
-        current_trail = self.store
-        path_stack = LinkedStack()
-
-        while True:
-
-            if isinstance(current_trail, TrailSplit):
-
-                if current_trail.path_follow.store is not None:
-                    path_stack.push(current_trail.path_follow.store)
-
-                if personality.select_branch(current_trail.path_top, current_trail.path_bottom):
-                    current_trail = current_trail.path_top.store
+        trail = self.store
+        while trail is not None:
+            if isinstance(trail, TrailSplit):
+                if trail.path_follow.store is not None:
+                    personality.add_mountain(trail.path_follow.store.mountain)
+                if personality.select_branch(trail.path_top, trail.path_bottom):
+                    trail = trail.path_top.store
                 else:
-                    current_trail = current_trail.path_bottom.store
-
-            if isinstance(current_trail, TrailSeries):
-                if current_trail.mountain is not None:
-                    personality.add_mountain(current_trail.mountain)
-
-                current_trail = current_trail.following.store
-
-            if current_trail is None:
-                if not path_stack.is_empty():
-                    current_trail = path_stack.pop()
-                else:
-                    break
+                    trail = trail.path_bottom.store
+            elif isinstance(trail, TrailSeries):
+                if trail.mountain is not None:
+                    personality.add_mountain(trail.mountain)
+                trail = trail.following.store
+        personality.mountains.reverse()
 
     def collect_all_mountains(self) -> list[Mountain]:
         """Returns a list of all mountains on the trail."""
@@ -126,4 +114,3 @@ class Trail:
         Paths are unique if they take a different branch, even if this results in the same set of mountains.
         """
         raise NotImplementedError()
-
