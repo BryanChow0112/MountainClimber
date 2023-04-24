@@ -21,6 +21,8 @@ class TestDoubleHash(unittest.TestCase):
         dt["Ivy", "Jen"] = 4
         dt["May", "Tom"] = 5
         dt["Tim", "Bob"] = 6
+        print(dt)
+
         self.assertRaises(KeyError, lambda: dt._linear_probe("May", "Jim", False))
         self.assertEqual(dt._linear_probe("May", "Jim", True), (6, 1))
         dt["May", "Jim"] = 7 # Linear probing on internal table
@@ -103,6 +105,7 @@ class TestDoubleHash(unittest.TestCase):
         # Test that these are actually iterators,
         # and so changing the underlying data structure changes the next value.
         dt = DoubleKeyTable()
+        # print(dt._linear_probe('Kim','Tim',True))
         dt["May", "Jim"] = 1
         dt["Kim", "Tim"] = 2
 
@@ -110,6 +113,10 @@ class TestDoubleHash(unittest.TestCase):
         value_iterator = dt.iter_values()
 
         key = next(key_iterator)
+        # key = next(key_iterator)
+        # print(key)
+        # key = next(key_iterator)
+        # print(key)
         self.assertIn(key, ["May", "Kim"])
         value = next(value_iterator)
         self.assertIn(value, [1, 2])
