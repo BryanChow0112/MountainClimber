@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from mountain import Mountain
-from data_structures.linked_stack.py import LinkedStack
+from data_structures.linked_stack import LinkedStack
 from typing import TYPE_CHECKING, Union
 
 # Avoid circular imports for typing.
@@ -90,28 +90,29 @@ class Trail:
         current_trail = self.store
         path_stack = LinkedStack()
 
-        while current_trail is not None:
+        while True:
 
             if isinstance(current_trail, TrailSplit):
 
-                if current_trail.path_follow is not None:
-                    path_stack.push(current_trail.path_follow)
+                if current_trail.path_follow.store is not None:
+                    path_stack.push(current_trail.path_follow.store)
 
-                if personality.select_branch(trail.path_top, trail.path_bottom):
-                    current_trail = trail.path_top.store
+                if personality.select_branch(current_trail.path_top, current_trail.path_bottom):
+                    current_trail = current_trail.path_top.store
                 else:
-                    trail = trail.path_bottom.store
+                    current_trail = current_trail.path_bottom.store
 
-            elif isinstance(current_trail, TrailSeries):
-                personality.add_mountain(current_trail.mountain)
-                current_trail = current_trail.following
+            if isinstance(current_trail, TrailSeries):
+                if current_trail.mountain is not None:
+                    personality.add_mountain(current_trail.mountain)
 
-            elif current_trail is None:
+                current_trail = current_trail.following.store
+
+            if current_trail is None:
                 if not path_stack.is_empty():
                     current_trail = path_stack.pop()
                 else:
                     break
-
 
     def collect_all_mountains(self) -> list[Mountain]:
         """Returns a list of all mountains on the trail."""
@@ -125,3 +126,4 @@ class Trail:
         Paths are unique if they take a different branch, even if this results in the same set of mountains.
         """
         raise NotImplementedError()
+
