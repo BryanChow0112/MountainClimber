@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="01d5eca2-de9c-4be3-87ea-1dcaeebd749c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/algorithms/binary_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/binary_search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/algorithms/mergesort.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/mergesort.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/double_key_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/double_key_table.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infinite_hash_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/infinite_hash_table.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mountain_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/mountain_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mountain_organiser.py" beforeDir="false" afterPath="$PROJECT_DIR$/mountain_organiser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_double_hash.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_double_hash.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trail.py" beforeDir="false" afterPath="$PROJECT_DIR$/trail.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/tests/test_trail_edits.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/trail.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2OdPIhcDiO0lVhvgYZ2KMV4VihN" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Task2__follow__path&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.updates&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="01d5eca2-de9c-4be3-87ea-1dcaeebd749c" name="Changes" comment="" />
+      <created>1681887410772</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681887410772</updated>
+      <workItem from="1681887412337" duration="2031000" />
+      <workItem from="1681892248669" duration="2021000" />
+      <workItem from="1681898624457" duration="374000" />
+      <workItem from="1681899471158" duration="754000" />
+      <workItem from="1681930795112" duration="11000" />
+      <workItem from="1681930815493" duration="65000" />
+      <workItem from="1681995772747" duration="183000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

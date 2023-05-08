@@ -64,10 +64,12 @@ class InfiniteHashTable(Generic[K, V]):
         # If the position is empty, set the key-value pair directly
         if self.array[index] is None:
             self.array[index] = (key, value)
+            self.count += 1
 
         # If there's a sub-table, recurse to set the key in the sub-table
         elif isinstance(self.array[index][1], InfiniteHashTable):
             self.array[index][1][key] = value
+            self.count += 1
 
         else:
             # If there's a collision, create a new sub-table and re-insert the existing key-value pair and the new one
@@ -79,8 +81,7 @@ class InfiniteHashTable(Generic[K, V]):
             sub_table[key] = value
 
             self.array[index] = (existing_key[:self.level + 1], sub_table)
-
-        self.count += 1
+            self.count += 1
 
     def __delitem__(self, key: K) -> None:
         """
@@ -97,6 +98,7 @@ class InfiniteHashTable(Generic[K, V]):
             if isinstance(self.array[index][1], InfiniteHashTable):
 
                 del self.array[index][1][key]
+                self.count -= 1
 
                 # If the internal hash table now only contains a single item, replace the hash table with that item
                 if len(self.array[index][1]) == 1:
@@ -115,8 +117,7 @@ class InfiniteHashTable(Generic[K, V]):
             else:
                 # If there's no internal hash table, remove the key-value pair from the array
                 self.array[index] = None
-
-            self.count -= 1
+                self.count -= 1
 
         else:
             raise KeyError(f"KeyError: {key}")
