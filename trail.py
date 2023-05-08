@@ -47,7 +47,7 @@ class TrailSeries:
 
     def add_mountain_before(self, mountain: Mountain) -> TrailStore:
         """Adds a mountain in series before the current one."""
-        return TrailSeries(mountain=mountain,following=Trail(store=self))
+        return TrailSeries(mountain=mountain, following=Trail(store=self))
 
     def add_empty_branch_before(self) -> TrailStore:
         """Adds an empty branch, where the current trailstore is now the following path."""
@@ -59,11 +59,11 @@ class TrailSeries:
 
     def add_mountain_after(self, mountain: Mountain) -> TrailStore:
         """Adds a mountain after the current mountain, but before the following trail."""
-        return TrailSeries(mountain=self.mountain,following=Trail(store=TrailSeries(mountain=mountain,following=self.following)))
+        return TrailSeries(mountain=self.mountain, following=Trail(store=TrailSeries(mountain=mountain, following=self.following)))
 
     def add_empty_branch_after(self) -> TrailStore:
         """Adds an empty branch after the current mountain, but before the following trail."""
-        return TrailSeries(mountain=self.mountain,following=Trail(store=TrailSplit(
+        return TrailSeries(mountain=self.mountain, following=Trail(store=TrailSplit(
             path_top=Trail(store=None),
             path_bottom=Trail(store=None),
             path_follow=Trail(store=None)
@@ -89,27 +89,32 @@ class Trail:
 
     def follow_path(self, personality: WalkerPersonality) -> None:
         """Follow a path and add mountains according to a personality."""
-        stack1 = LinkedStack()
-        stack2 = LinkedStack()
-        trail = self.store
-        while trail is not None:
-            if isinstance(trail, TrailSplit):
-                if trail.path_follow.store is not None:
-                    stack1.push(trail.path_follow.store.mountain)
-                if personality.select_branch(trail.path_top, trail.path_bottom):
-                    trail = trail.path_top.store
+        current_trail = self.store
+        path_stack = LinkedStack()
+
+        while True:
+
+            if isinstance(current_trail, TrailSplit):
+
+                if current_trail.path_follow.store is not None:
+                    path_stack.push(current_trail.path_follow.store)
+
+                if personality.select_branch(current_trail.path_top, current_trail.path_bottom):
+                    current_trail = current_trail.path_top.store
                 else:
-                    trail = trail.path_bottom.store
-            elif isinstance(trail, TrailSeries):
-                if trail.mountain is not None:
-                    print('mountain:', trail.mountain)
-                    stack2.push(trail.mountain)
-                trail = trail.following.store
-        for _ in range(len(stack2)):
-            stack1.push(stack2.pop())
-        for _ in range(len(stack1)):
-            item = stack1.pop()
-            personality.add_mountain(item)
+                    current_trail = current_trail.path_bottom.store
+
+            if isinstance(current_trail, TrailSeries):
+                if current_trail.mountain is not None:
+                    personality.add_mountain(current_trail.mountain)
+
+                current_trail = current_trail.following.store
+
+            if current_trail is None:
+                if not path_stack.is_empty():
+                    current_trail = path_stack.pop()
+                else:
+                    break
 
     def collect_all_mountains(self) -> list[Mountain]:
         """Returns a list of all mountains on the trail.
