@@ -114,23 +114,16 @@ class DoubleKeyTable(Generic[K1, K2, V]):
         # res: list = []
         if key is None:
             for x in range(self.table_size):
-                try:
-                    if self.table[x] is not None:
-                        yield self.table[x][0]
-                except StopIteration:
-                    raise BaseException
+                if self.table[x] is not None:
+                    yield self.table[x][0]
         else:
             for x in range(self.table_size):
                 if self.table[x] is not None:
                     if self.table[x][0] == key:
                         linear_probe_table = self.table[x][1]
                         for y in range(linear_probe_table.table_size):
-                            try:
-                                if linear_probe_table.array[y] is not None:
-                                    yield linear_probe_table.array[y][0]
-                            except StopIteration:
-                                raise BaseException
-        # yield res
+                            if linear_probe_table.array[y] is not None:
+                                yield linear_probe_table.array[y][0]
 
     def keys(self, key: K1 | None = None) -> list[K1]:
         """
@@ -147,9 +140,10 @@ class DoubleKeyTable(Generic[K1, K2, V]):
                 if self.table[x] is not None:
                     if self.table[x][0] == key:
                         linear_probe_table = self.table[x][1]
-                        for y in range(linear_probe_table.table_size):
-                            if linear_probe_table.array[y] is not None:
-                                res.append(linear_probe_table.array[y][0])
+                        return linear_probe_table.keys()
+                        # for y in range(linear_probe_table.table_size):
+                        #     if linear_probe_table.array[y] is not None:
+                        #         res.append(linear_probe_table.array[y][0])
         return res
 
     def iter_values(self, key: K1 | None = None) -> Iterator[V]:
@@ -164,20 +158,15 @@ class DoubleKeyTable(Generic[K1, K2, V]):
                 if self.table[x] is not None:
                     linear_probe_table = self.table[x][1]
                     for y in range(linear_probe_table.table_size):
-                        try:
-                            if linear_probe_table.array[y] is not None:
-                                yield linear_probe_table.array[y][1]
-                        except StopIteration:
-                            raise BaseException
+                        if linear_probe_table.array[y] is not None:
+                            yield linear_probe_table.array[y][1]
         else:
             pos1 = self.hash1(key)
             linear_probe_table = self.table[pos1][1]
+            # return linear_probe_table.values()
             for y in range(linear_probe_table.table_size):
-                try:
-                    if linear_probe_table.array[y] is not None:
-                        yield linear_probe_table.array[y][1]
-                except StopIteration:
-                    raise BaseException
+                if linear_probe_table.array[y] is not None:
+                    yield linear_probe_table.array[y][1]
 
     def values(self, key: K1 | None = None) -> list[V]:
         """
@@ -195,9 +184,10 @@ class DoubleKeyTable(Generic[K1, K2, V]):
         else:
             pos1 = self.hash1(key)
             linear_probe_table = self.table[pos1][1]
-            for y in range(linear_probe_table.table_size):
-                if linear_probe_table.array[y] is not None:
-                    res.append(linear_probe_table.array[y][1])
+            return linear_probe_table.values()
+            # for y in range(linear_probe_table.table_size):
+            #     if linear_probe_table.array[y] is not None:
+            #         res.append(linear_probe_table.array[y][1])
         return res
 
     def __contains__(self, key: tuple[K1, K2]) -> bool:

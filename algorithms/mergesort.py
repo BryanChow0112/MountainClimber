@@ -3,7 +3,8 @@ from typing import TypeVar
 
 T = TypeVar("T")
 
-def merge(l1: list[T], l2: list[T], key=lambda x:x) -> list[T]:
+
+def merge(l1: list[T], l2: list[T], key=lambda x: x) -> list[T]:
     """
     Merges two sorted lists into one larger sorted list,
     containing all elements from the smaller lists.
@@ -21,6 +22,8 @@ def merge(l1: list[T], l2: list[T], key=lambda x:x) -> list[T]:
         if key(l1[cur_left]) <= key(l2[cur_right]):
             new_list.append(l1[cur_left])
             cur_left += 1
+        elif key(l1[cur_left]) == key(l2[cur_right]):
+            return mergesort(l1, l2, key=lambda x: x.name)
         else:
             new_list.append(l2[cur_right])
             cur_right += 1
@@ -28,14 +31,15 @@ def merge(l1: list[T], l2: list[T], key=lambda x:x) -> list[T]:
     new_list += l2[cur_right:]
     return new_list
 
-def mergesort(l: list[T]) -> list[T]:
+
+def mergesort(l: list[T], key = lambda x: x) -> list[T]:
     """
     Sort a list using the mergesort operation.
     :complexity: Best/Worst Case O(NlogN * comp(T))
     """
     if len(l) <= 1:
         return l
-    break_index = (len(l)+1) // 2
-    l1 = mergesort(l[:break_index])
-    l2 = mergesort(l[break_index:])
-    return merge(l1, l2)
+    break_index = (len(l) + 1) // 2
+    l1 = mergesort(l[:break_index], key)
+    l2 = mergesort(l[break_index:], key)
+    return merge(l1, l2, key)

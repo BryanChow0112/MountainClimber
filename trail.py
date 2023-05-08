@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-
+from collections import defaultdict
 from mountain import Mountain
 
 from typing import TYPE_CHECKING, Union
@@ -77,8 +77,10 @@ TrailStore = Union[TrailSplit, TrailSeries, None]
 class Trail:
     store: TrailStore = None
 
+
     def add_mountain_before(self, mountain: Mountain) -> Trail:
         """Adds a mountain before everything currently in the trail."""
+        self.mountain_list.append(mountain)
         return Trail(store=TrailSeries(mountain, self))
 
     def add_empty_branch_before(self) -> Trail:
@@ -108,11 +110,13 @@ class Trail:
         for _ in range(len(stack1)):
             item = stack1.pop()
             personality.add_mountain(item)
-        print(personality.mountains)
 
     def collect_all_mountains(self) -> list[Mountain]:
-        """Returns a list of all mountains on the trail."""
-        raise NotImplementedError()
+        """Returns a list of all mountains on the trail.
+        implement the method collect_all_mountains, which returns a list of Mountains that are within this trail.
+        This should run in O(N) time, where N is the total number of mountains and branches combined.
+        """
+        raise NotImplementedError
 
     def length_k_paths(self, k) -> list[list[Mountain]]:  # Input to this should not exceed k > 50, at most 5 branches.
         """
@@ -121,4 +125,5 @@ class Trail:
 
         Paths are unique if they take a different branch, even if this results in the same set of mountains.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
+        
