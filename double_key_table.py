@@ -30,6 +30,14 @@ class DoubleKeyTable(Generic[K1, K2, V]):
     HASH_BASE = 31
 
     def __init__(self, sizes: list | None = None, internal_sizes: list | None = None) -> None:
+        """
+        Initialise the DoubleKeyTable.
+
+        Complexity
+        - Worst case: O(1), initialisation operation is a constant time operation.
+        - Best case: O(1), same as worst case
+
+        """
         if sizes is not None:
             self.TABLE_SIZES = sizes
         if internal_sizes is not None:
@@ -254,14 +262,6 @@ class DoubleKeyTable(Generic[K1, K2, V]):
         else:
             self.table[int1][1].array[int2] = None
             self.table[int1][1].count -= 1
-            int2 = (int2 + 1) % self.table[int1][1].table_size
-            while self.table[int1][1].array[int2] is not None:
-                key_, value_ = self.table[int1][1].array[int2]
-                self.table[int1][1].array[int2] = None
-                # Reinsert.
-                int1_, int2_ = self._linear_probe(key1, key_, True)
-                self.table[int1][1].array[int2_] = (key_, value_)
-                int2 = (int2 + 1) % self.table[int1][1].table_size
 
     def _rehash(self) -> None:
         """
