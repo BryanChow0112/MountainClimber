@@ -22,6 +22,14 @@ class InfiniteHashTable(Generic[K, V]):
     TABLE_SIZE = 27
 
     def __init__(self, level: int = 0) -> None:
+        """
+        Initialise the InfiniteHashTable.
+
+        Complexity
+        - Worst case: O(1), initialisation operation is a constant time operation.
+        - Best case: O(1), same as worst case
+
+        """
         self.level = level
         self.array = ArrayR(self.TABLE_SIZE)
         self.count = 0
@@ -36,6 +44,11 @@ class InfiniteHashTable(Generic[K, V]):
         Get the value at a certain key
 
         :raises KeyError: when the key doesn't exist.
+
+        Complexity:
+        - Worst case: O(n), where n is the number of items stored in the hash table
+        - Best case: O(1), when the item is found at the exact index obtained by the hash function
+
         """
         # get the index in the array where the (key, value) pair would be stored
         index = self.hash(key)
@@ -57,6 +70,11 @@ class InfiniteHashTable(Generic[K, V]):
     def __setitem__(self, key: K, value: V) -> None:
         """
         Set a (key, value) pair in our hash table.
+
+        Complexity:
+        - Worst case: O(n), where n is the number of (key, value) pairs in the hash table
+        - Best case: O(1), when the key-value pair is inserted at an empty position in the table without any collision.
+
         """
         # get the index in the array where the (key, value) pair would be stored
         index = self.hash(key)
@@ -64,12 +82,10 @@ class InfiniteHashTable(Generic[K, V]):
         # If the position is empty, set the key-value pair directly
         if self.array[index] is None:
             self.array[index] = (key, value)
-            self.count += 1
 
         # If there's a sub-table, recurse to set the key in the sub-table
         elif isinstance(self.array[index][1], InfiniteHashTable):
             self.array[index][1][key] = value
-            self.count += 1
 
         else:
             # If there's a collision, create a new sub-table and re-insert the existing key-value pair and the new one
@@ -81,13 +97,19 @@ class InfiniteHashTable(Generic[K, V]):
             sub_table[key] = value
 
             self.array[index] = (existing_key[:self.level + 1], sub_table)
-            self.count += 1
+
+        self.count += 1
 
     def __delitem__(self, key: K) -> None:
         """
         Deletes a (key, value) pair in our hash table.
 
         :raises KeyError: when the key doesn't exist.
+
+        Complexity:
+        - Worst case: O(n), where n is the number of (key, value) pairs in the hash table
+        - Best case: O(1), when the key-value pair is deleted in the table without any collision.
+
         """
         # get the index in the array where the (key, value) pair would be stored
         index = self.hash(key)
@@ -145,6 +167,11 @@ class InfiniteHashTable(Generic[K, V]):
         Get the sequence of positions required to access this key.
 
         :raises KeyError: when the key doesn't exist.
+
+        Complexity:
+        - Worst case: O(n), where n is the number of (key, value) pairs in the hash table
+        - Best case: O(1), when the key-value pair is found in the table without any collision.
+
         """
         # get the index in the array where the (key, value) pair would be stored
         index = self.hash(key)
