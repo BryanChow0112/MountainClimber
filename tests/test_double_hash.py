@@ -21,7 +21,6 @@ class TestDoubleHash(unittest.TestCase):
         dt["Ivy", "Jen"] = 4
         dt["May", "Tom"] = 5
         dt["Tim", "Bob"] = 6
-        print(dt)
 
         self.assertRaises(KeyError, lambda: dt._linear_probe("May", "Jim", False))
         self.assertEqual(dt._linear_probe("May", "Jim", True), (6, 1))

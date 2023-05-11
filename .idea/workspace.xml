@@ -5,8 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="01d5eca2-de9c-4be3-87ea-1dcaeebd749c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/FIT1008-A2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/FIT1008-A2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/algorithms/binary_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/binary_search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/algorithms/mergesort.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/mergesort.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/double_key_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/double_key_table.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infinite_hash_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/infinite_hash_table.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mountain_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/mountain_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mountain_organiser.py" beforeDir="false" afterPath="$PROJECT_DIR$/mountain_organiser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_double_hash.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_double_hash.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trail.py" beforeDir="false" afterPath="$PROJECT_DIR$/trail.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,10 +23,15 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/tests/test_trail_edits.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/trail.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2OdPIhcDiO0lVhvgYZ2KMV4VihN" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -61,10 +72,15 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/FIT1008_A2$.coverage" NAME=" Coverage Results" MODIFIED="1681899639370" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
-    <SUITE FILE_PATH="coverage/FIT1008_A2$trail.coverage" NAME="trail Coverage Results" MODIFIED="1681893648105" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/FIT1008_A2$run_tests.coverage" NAME="run_tests Coverage Results" MODIFIED="1681887579428" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/FIT1008_A2$main.coverage" NAME="main Coverage Results" MODIFIED="1681995777855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
