@@ -32,11 +32,12 @@ class DoubleKeyTable(Generic[K1, K2, V]):
     def __init__(self, sizes: list | None = None, internal_sizes: list | None = None) -> None:
         if sizes is not None:
             self.TABLE_SIZES = sizes
-        if internal_sizes is not None:
-            LinearProbeTable.TABLE_SIZES = internal_sizes
+        # if internal_sizes is not None:
+        #     LinearProbeTable.TABLE_SIZES = internal_sizes
         self.size_index = 0
         self.table = ArrayR(self.TABLE_SIZES[self.size_index])
         self.count = 0
+        self.internal_sizes = internal_sizes
 
     def hash1(self, key: K1) -> int:
         """
@@ -74,31 +75,25 @@ class DoubleKeyTable(Generic[K1, K2, V]):
         : raises FullError: When a table is full and cannot be inserted.
         """
         pos1 = self.hash1(key1)
-        int1: int = None
-        for _ in range(len(self.table)):
+
+        for _ in range(self.table_size):
             if self.table[pos1] is None:
                 if is_insert:
-                    int1 = pos1
-                    linear_probe_table = LinearProbeTable()
-                    int2 = self.hash2(key2, linear_probe_table)
-                    return int1, int2
+                    linear_probe_table = LinearProbeTable(self.internal_sizes)
+                    linear_probe_table.hash = lambda k : self.hash2(k, linear_probe_table)
+                    self.table[pos1] = (key1, linear_probe_table)
+                    pos2 = linear_probe_table._linear_probe(key2, is_insert)
+                    self.count += 1
+                    return pos1, pos2
                 else:
                     raise KeyError("key pair is not in the table")
             elif self.table[pos1][0] == key1:
                 linear_probe_table = self.table[pos1][1]
-                pos2 = self.hash2(key2, linear_probe_table)
-                for x in range(self.table[pos1][1].table_size):
-                    if self.table[pos1][1].array[pos2] is None:
-                        if is_insert:
-                            return pos1, pos2
-                        else:
-                            raise KeyError("key pair is not in the table")
-                    elif self.table[pos1][1].array[pos2][0] == key2:
-                        return pos1, pos2
-                    else:
-                        pos2 = (pos2 + 1) % self.table[pos1][1].table_size
+                pos2 = linear_probe_table._linear_probe(key2, is_insert)
+                return pos1, pos2
             else:
-                pos1 = (pos1 + 1) % len(self.table)
+                pos1 = (pos1 + 1) % self.table_size
+
         if is_insert:
             raise FullError("Table is full!")
         else:
@@ -151,7 +146,7 @@ class DoubleKeyTable(Generic[K1, K2, V]):
             Returns an iterator of all values in the bottom-hash-table for k.
         """
         if key is None:
-            for x in range(len(self.table)):
+            for x in range(self.table_size):
                 if self.table[x] is not None:
                     linear_probe_table = self.table[x][1]
                     for y in range(linear_probe_table.table_size):
@@ -160,7 +155,6 @@ class DoubleKeyTable(Generic[K1, K2, V]):
         else:
             pos1 = self.hash1(key)
             linear_probe_table = self.table[pos1][1]
-            # return linear_probe_table.values()
             for y in range(linear_probe_table.table_size):
                 if linear_probe_table.array[y] is not None:
                     yield linear_probe_table.array[y][1]
@@ -173,7 +167,7 @@ class DoubleKeyTable(Generic[K1, K2, V]):
             """
         res: list = []
         if key is None:
-            for x in range(len(self.table)):
+            for x in range(self.table_size):
                 if self.table[x] is not None:
                     linear_probe_table = self.table[x][1]
                     for y in range(linear_probe_table.table_size):
@@ -206,27 +200,18 @@ class DoubleKeyTable(Generic[K1, K2, V]):
         """
         key1, key2 = key
         int1, int2 = self._linear_probe(key1, key2, False)
-        return self.table[int1][1].array[int2][1]
+        return self.table[int1][1][int2][1]
 
     def __setitem__(self, key: tuple[K1, K2], data: V) -> None:
         """
         Set an (key, value) pair in our hash table.
         """
         key1, key2 = key
-        int1, int2 = self._linear_probe(key1, key2, True)
+        pos1, pos2 = self._linear_probe(key1, key2, True)
 
-        if self.table[int1] is None:
-            self.count += 1
-            linear_probe_table = LinearProbeTable()
-            linear_probe_table.array[int2] = (key2, data)
-            linear_probe_table.count += 1
-            self.table[int1] = (key1, linear_probe_table)
-        else:
-            linear_probe_table = self.table[int1][1]
-            linear_probe_table.array[int2] = (key2, data)
-            linear_probe_table.count += 1
+        self.table[pos1][1][key2] = data
 
-        if len(linear_probe_table) > linear_probe_table.table_size / 2 or len(self) > self.table_size / 2:
+        if len(self) > self.table_size / 2:
             self._rehash()
 
     def __delitem__(self, key: tuple[K1, K2]) -> None:
@@ -238,7 +223,7 @@ class DoubleKeyTable(Generic[K1, K2, V]):
         key1, key2 = key
         int1, int2 = self._linear_probe(key1, key2, False)
         # Remove the element
-        if len(self.table[int1][1].keys()) == 1:
+        if len(self.table[int1][1]) == 1:
             self.table[int1] = None
             self.count -= 1
             int1 = (int1 + 1) % self.table_size
@@ -252,16 +237,8 @@ class DoubleKeyTable(Generic[K1, K2, V]):
                 self.table[int1_] = (key_, value_)
                 int1 = (int1 + 1) % self.table_size
         else:
-            self.table[int1][1].array[int2] = None
-            self.table[int1][1].count -= 1
-            int2 = (int2 + 1) % self.table[int1][1].table_size
-            while self.table[int1][1].array[int2] is not None:
-                key_, value_ = self.table[int1][1].array[int2]
-                self.table[int1][1].array[int2] = None
-                # Reinsert.
-                int1_, int2_ = self._linear_probe(key1, key_, True)
-                self.table[int1][1].array[int2_] = (key_, value_)
-                int2 = (int2 + 1) % self.table[int1][1].table_size
+            linear_probe_table = self.table[int1][1]
+            linear_probe_table.__delitem__(key2)
 
     def _rehash(self) -> None:
         """
@@ -271,38 +248,21 @@ class DoubleKeyTable(Generic[K1, K2, V]):
         :complexity worst: O(N*hash(K) + N^2*comp(K)) Lots of probing.
         Where N is len(self)
         """
-        if len(self) > self.table_size / 2:
-            old_table = self.table
-            self.size_index += 1
-            if self.size_index == len(self.TABLE_SIZES):
-                # Cannot be resized further.
-                return
-            self.table = ArrayR(self.TABLE_SIZES[self.size_index])
-            self.count = 0
-            for item in old_table:
-                if item is not None:
-                    key1, linear_probe_table = item
-                    for y in range(linear_probe_table.table_size):
-                        if linear_probe_table.array[y] is not None:
-                            key2, value = linear_probe_table.array[y]
-                            self[(key1, key2)] = value
-        for x in range(self.table_size):
-            if self.table[x] is not None:
-                key1, linear_probe_table = self.table[x]
-                # print(linear_probe_table)
-                if len(linear_probe_table) > linear_probe_table.table_size / 2:
-                    old_internal_table = linear_probe_table.array
-                    linear_probe_table.size_index += 1
-                    if linear_probe_table.size_index == len(linear_probe_table.TABLE_SIZES):
-                        # Cannot be resized further.
-                        return
-                    linear_probe_table.array = ArrayR(linear_probe_table.TABLE_SIZES[linear_probe_table.size_index])
-                    linear_probe_table.count = 0
-                    for item in old_internal_table:
-                        if item is not None:
-                            key2, value = item
-                            self[(key1, key2)] = value
-
+        # if len(self) > self.table_size // 2:
+        old_table = self.table
+        self.size_index += 1
+        if self.size_index == len(self.TABLE_SIZES):
+            # Cannot be resized further.
+            return
+        self.table = ArrayR(self.TABLE_SIZES[self.size_index])
+        self.count = 0
+        for item in old_table:
+            if item is not None:
+                key1, linear_probe_table = item
+                for y in range(linear_probe_table.table_size):
+                    if linear_probe_table.array[y] is not None:
+                        key2, value = linear_probe_table.array[y]
+                        self[key1, key2] = value
     @property
     def table_size(self) -> int:
         """
