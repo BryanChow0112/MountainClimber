@@ -87,15 +87,21 @@ class Trail:
         return Trail(store=TrailSplit(path_top=Trail(None), path_bottom=Trail(None), path_follow=self))
 
     def follow_path(self, personality: WalkerPersonality) -> None:
-        """Follow a path and add mountains according to a personality."""
+        """
+        Follow a path and add mountains according to a personality.
 
+        Complexity:
+        - Worst case: O(n), where n is the total number of TrailSeries and TrailSplit objects in the trail system.
+        This occurs when we need to traverse the longest path to complete the trail.
+        - Best case: O(1), when the trail is empty (i.e., no mountains or trails have been added).
+
+        """
         current_trail = self.store
         path_stack = LinkedStack()
 
         while True:
 
             if isinstance(current_trail, TrailSplit):
-
                 if current_trail.path_follow.store is not None:
                     path_stack.push(current_trail.path_follow.store)
 
@@ -121,26 +127,40 @@ class Trail:
         implement the method collect_all_mountains, which returns a list of Mountains that are within this trail.
         This should run in O(N) time, where N is the total number of mountains and branches combined.
         """
-        mountain_list : list = []
-        mystack = LinkedStack()
-        mystack.push(self.store)
+        mountain_list: list = []
+        my_stack = LinkedStack()
 
-        while not mystack.is_empty():
-            current_trail = mystack.pop()
+        my_stack.push(self.store)
+
+        while not my_stack.is_empty():
+
+            current_trail = my_stack.pop()
+
             if isinstance(current_trail, TrailSplit):
-                if current_trail.path_follow.store is not None:
-                    mountain_list.append(current_trail.path_follow.store.mountain)
-                mystack.push(current_trail.path_top.store)
-                mystack.push(current_trail.path_bottom.store)
+                # if current_trail.path_follow.store is not None:
+                #     mountain_list.append(current_trail.path_follow.store.mountain)
+                my_stack.push(current_trail.path_follow.store)
+                my_stack.push(current_trail.path_top.store)
+                my_stack.push(current_trail.path_bottom.store)
+
             if isinstance(current_trail, TrailSeries):
                 if current_trail.mountain is not None:
                     mountain_list.append(current_trail.mountain)
-                mystack.push(current_trail.following.store)
+
+                my_stack.push(current_trail.following.store)
+
         return mountain_list
 
     def length_k_paths(self, k) -> list[list[Mountain]]:
+        """
+        Returns a list of all paths of containing exactly k mountains.
+        Paths are represented as lists of mountains.
+
+        Paths are unique if they take a different branch, even if this results in the same set of mountains.
+        """
         final_list: list[list[Mountain]] = []
         stack2 = LinkedStack()
+
         def inner_list(current_trail: Trail, trail_list: list) -> list[list[Mountain]]:
             if current_trail.store is None:
                 while not stack2.is_empty():

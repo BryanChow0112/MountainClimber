@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="01d5eca2-de9c-4be3-87ea-1dcaeebd749c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithms/binary_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/binary_search.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithms/mergesort.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/mergesort.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/double_key_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/double_key_table.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/infinite_hash_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/infinite_hash_table.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mountain_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/mountain_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mountain_organiser.py" beforeDir="false" afterPath="$PROJECT_DIR$/mountain_organiser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_double_hash.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_double_hash.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trail.py" beforeDir="false" afterPath="$PROJECT_DIR$/trail.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
