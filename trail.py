@@ -49,6 +49,7 @@ class TrailSeries:
         """Adds a mountain in series before the current one."""
         return TrailSeries(mountain=mountain, following=Trail(store=self))
 
+    # self.assertIsInstance(res1.following.store.path_follow.store, TrailSeries)
     def add_empty_branch_before(self) -> TrailStore:
         """Adds an empty branch, where the current trailstore is now the following path."""
         return TrailSplit(
@@ -67,7 +68,7 @@ class TrailSeries:
         return TrailSeries(mountain=self.mountain, following=Trail(store=TrailSplit(
             path_top=Trail(store=None),
             path_bottom=Trail(store=None),
-            path_follow=Trail(store=None)
+            path_follow=Trail(store=self.following.store)
         )))
 
 
@@ -137,8 +138,6 @@ class Trail:
             current_trail = my_stack.pop()
 
             if isinstance(current_trail, TrailSplit):
-                # if current_trail.path_follow.store is not None:
-                #     mountain_list.append(current_trail.path_follow.store.mountain)
                 my_stack.push(current_trail.path_follow.store)
                 my_stack.push(current_trail.path_top.store)
                 my_stack.push(current_trail.path_bottom.store)
@@ -180,5 +179,6 @@ class Trail:
                         stack2.push(current_trail.store.mountain)
                         paths.extend(inner_list(current_trail.store.following, trail_list))
                 return paths
+
         final_list.extend(inner_list(self, []))
         return final_list
