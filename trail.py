@@ -67,7 +67,7 @@ class TrailSeries:
         return TrailSeries(mountain=self.mountain, following=Trail(store=TrailSplit(
             path_top=Trail(store=None),
             path_bottom=Trail(store=None),
-            path_follow=Trail(store=None)
+            path_follow=Trail(store=self.following.store)
         )))
 
 
