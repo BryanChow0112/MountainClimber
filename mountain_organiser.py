@@ -44,7 +44,6 @@ class MountainOrganiser:
         - Best case: O(M log(M) + N), same as worst case (when the input list is sorted)
 
         """
-
         self.mountain_rank.extend(mountains)
         # Sort the mountain_rank list using mergesort, with the length of the mountain as key
         self.mountain_rank = mergesort(self.mountain_rank, key=lambda x: x.length)

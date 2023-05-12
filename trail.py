@@ -124,9 +124,11 @@ class Trail:
                     break
 
     def collect_all_mountains(self) -> list[Mountain]:
-        """Returns a list of all mountains on the trail.
-        implement the method collect_all_mountains, which returns a list of Mountains that are within this trail.
+        """
+        Returns a list of all mountains on the trail.
+
         This should run in O(N) time, where N is the total number of mountains and branches combined.
+
         """
         mountain_list: list = []
         my_stack = LinkedStack()
